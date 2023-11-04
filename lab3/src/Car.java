@@ -2,17 +2,17 @@ public class Car {
     private final String brand;
     private final String model;
     private final String vin;
-    private final Quality quality;
+    private final Type type;
 
-    public Car(String brand, String model, String vin, Quality quality){
+    public Car(String brand, String model, String vin, Type type){
         this.brand = brand;
         this.model = model;
         this.vin = vin;
-        this.quality = quality;
+        this.type = type;
     }
 
-    public Quality getQuality() {
-        return quality;
+    public Type getType() {
+        return type;
     }
 
     public String getBrand() {

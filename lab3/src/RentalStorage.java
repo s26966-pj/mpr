@@ -7,7 +7,7 @@ public class RentalStorage {
 
     private RentalStorage() {}
 
-    public RentalStorage getInstance() {
+    public static RentalStorage getInstance() {
         if (rentalStorage == null) {
             rentalStorage = new RentalStorage();
         }

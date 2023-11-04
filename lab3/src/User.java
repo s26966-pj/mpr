@@ -1,11 +1,11 @@
 public class User {
-    private final String id;
+    private final int id;
 
-    public User(String id) {
+    public User(int id) {
         this.id = id;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 }
