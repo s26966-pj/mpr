@@ -1,3 +1,5 @@
+package org.example;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
@@ -83,7 +85,7 @@ public class RentalService {
         boolean isStartDateAfterRentalEnd = startDate.isAfter(rental.getDateTo());
         return !(isEndDateBeforeRentalStart || isStartDateAfterRentalEnd);
     }
-    
+
     public Optional<Car> findCarByVin(String vin) {
         return carsStorage.getAllCars().stream().filter(car -> car.getVin().equals(vin)).findFirst();
     }
