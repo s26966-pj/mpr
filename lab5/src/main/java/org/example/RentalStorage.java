@@ -24,4 +24,7 @@ public class RentalStorage {
         return rentalList;
     }
 
+    public void purgeList() {
+        rentalList.clear();
+    }
 }

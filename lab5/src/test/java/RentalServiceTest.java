@@ -1,16 +1,138 @@
-import org.example.CarsStorage;
-import org.example.RentalService;
-import org.example.RentalStorage;
+import org.example.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
+import java.util.Optional;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class RentalServiceTest {
-    private RentalStorage rentalStorage = RentalStorage.getInstance();
-    private CarsStorage carsStorage = CarsStorage.getInstance();
-    private RentalService rentalService = new RentalService(carsStorage, rentalStorage);
+    private RentalStorage rentalStorage;
+    private CarsStorage carsStorage;
+    private RentalService rentalService;
+
+    @BeforeEach
+    void startUp() {
+        rentalStorage = RentalStorage.getInstance();
+        carsStorage = CarsStorage.getInstance();
+        rentalService = new RentalService(carsStorage, rentalStorage);
+    }
+
+    @AfterEach
+    void endUp() {
+        carsStorage.purgeList();
+        rentalStorage.purgeList();
+    }
 
     @Test
     void shouldFindCarByVin() {
-
+        //GIVEN
+        String equalVin = "123";
+        Car car = new Car("model", "brand", equalVin, Type.STANDARD);
+        carsStorage.addCar(car);
+        //WHEN
+        Optional<Car> searchedCar = rentalService.findCarByVin(equalVin);
+        //THEN
+        assertThat(searchedCar).isPresent();
     }
 
+    @Test
+    void shouldNotFindCarByVin() {
+        String vin1 = "123";
+        String vin2 = "456";
+        Car car = new Car("model", "brand", vin1, Type.STANDARD);
+        carsStorage.addCar(car);
 
+        Optional<Car> searchedCar = rentalService.findCarByVin(vin2);
+
+        assertThat(searchedCar).isNotPresent();
+    }
+
+    @Test
+    void shouldEstimatePrice() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+
+        double estimatedPrice = rentalService.estimatePrice(vin, LocalDate.now(), LocalDate.now().plusDays(5));
+
+        assertThat(estimatedPrice).isEqualTo(500);
+    }
+
+    @Test
+    void shouldNotEstimatePrice() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+
+        double estimatedPrice = rentalService.estimatePrice(vin, LocalDate.now(), LocalDate.now().plusDays(-5));
+
+        assertThat(estimatedPrice).isEqualTo(0);
+    }
+
+    @Test
+    void shouldBeAvailable() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+        Rental rental1 = new Rental(new User(1), car, LocalDate.now(), LocalDate.now().plusDays(9));
+        Rental rental2 = new Rental(new User(1), car, LocalDate.now().plusDays(21), LocalDate.now().plusDays(30));
+        rentalStorage.addRental(rental1);
+        rentalStorage.addRental(rental2);
+
+        boolean isAvailable = rentalService.isAvailable(vin, LocalDate.now().plusDays(10), LocalDate.now().plusDays(20));
+
+        assertThat(isAvailable).isTrue();
+    }
+
+    @Test
+    void shouldNotBeAvailableByOverlappingDateByStartDate() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+        Rental rental = new Rental(new User(1), car, LocalDate.now(), LocalDate.now().plusDays(10));
+        rentalStorage.addRental(rental);
+
+        boolean isAvailable = rentalService.isAvailable(vin, LocalDate.now().plusDays(9), LocalDate.now().plusDays(20));
+
+        assertThat(isAvailable).isFalse();
+    }
+
+    @Test
+    void shouldNotBeAvailableByOverlappingDateByEndDate() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+        Rental rental = new Rental(new User(1), car, LocalDate.now().plusDays(10), LocalDate.now().plusDays(20));
+        rentalStorage.addRental(rental);
+
+        boolean isAvailable = rentalService.isAvailable(vin, LocalDate.now(), LocalDate.now().plusDays(11));
+
+        assertThat(isAvailable).isFalse();
+    }
+
+    @Test
+    void shouldNotBeAvailableByCarDoesNotExist() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+
+        boolean isAvailable = rentalService.isAvailable("notvin", LocalDate.now(), LocalDate.now().plusDays(11));
+
+        assertThat(isAvailable).isFalse();
+    }
+
+    @Test
+    void shouldRentCar() {
+        String vin = "123";
+        Car car = new Car("model", "brand", vin, Type.STANDARD);
+        carsStorage.addCar(car);
+
+        Rental rental = rentalService.rent(1, vin, LocalDate.now(), LocalDate.now().plusDays(1));
+
+        assertThat(rental).isNotNull();
+    }
 }

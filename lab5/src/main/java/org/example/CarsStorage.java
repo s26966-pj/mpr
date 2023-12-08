@@ -23,4 +23,8 @@ public class CarsStorage {
         carsList.add(car);
     }
 
+    public void purgeList() {
+        carsList.clear();
+    }
+
 }

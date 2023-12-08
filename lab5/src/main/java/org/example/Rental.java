@@ -5,17 +5,17 @@ import java.time.LocalDate;
 public class Rental {
     private final User user;
     private final Car car;
-    private final LocalDate dateFrom;
-    private final LocalDate dateTo;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public Rental(User user, Car car, LocalDate dateFrom, LocalDate dateTo) {
+    public Rental(User user, Car car, LocalDate startDate, LocalDate endDate) {
         this.user = user;
         this.car = car;
-        this.dateFrom = dateFrom;
-        this.dateTo = dateTo;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public User getuser() {
+    public User getUser() {
         return user;
     }
 
@@ -23,11 +23,11 @@ public class Rental {
         return car;
     }
 
-    public LocalDate getDateFrom() {
-        return dateFrom;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public LocalDate getDateTo() {
-        return dateTo;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 }
