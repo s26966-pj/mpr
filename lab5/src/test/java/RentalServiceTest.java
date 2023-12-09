@@ -38,7 +38,7 @@ public class RentalServiceTest {
         Car car = new Car("model", "brand", equalVin, Type.STANDARD);
         carsStorage.addCar(car);
         //WHEN
-        Optional<Car> searchedCar = rentalService.findCarByVin(equalVin);
+        Optional<Car> searchedCar = carsStorage.findCarByVin(equalVin);
         //THEN
         assertThat(searchedCar).isPresent();
     }
@@ -50,7 +50,7 @@ public class RentalServiceTest {
         Car car = new Car("model", "brand", vin1, Type.STANDARD);
         carsStorage.addCar(car);
 
-        Optional<Car> searchedCar = rentalService.findCarByVin(vin2);
+        Optional<Car> searchedCar = carsStorage.findCarByVin(vin2);
 
         assertThat(searchedCar).isNotPresent();
     }
