@@ -1,10 +1,13 @@
 package org.example;
 
+import org.springframework.stereotype.Service;
+
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class RentalService {
 
     private final CarsStorage carsStorage;

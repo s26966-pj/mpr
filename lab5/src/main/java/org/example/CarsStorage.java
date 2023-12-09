@@ -1,19 +1,14 @@
 package org.example;
 
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
-public class CarsStorage {
-    private static CarsStorage carsStorage;
-    private final List<Car> carsList = new ArrayList<>();
+import java.util.Optional;
 
-    private CarsStorage() {
-    }
-    public static CarsStorage getInstance() {
-        if (carsStorage == null) {
-            carsStorage = new CarsStorage();
-        }
-        return carsStorage;
-    }
+@Component
+public class CarsStorage {
+    private final List<Car> carsList = new ArrayList<>();
 
     public List<Car> getAllCars() {
         return carsList;
@@ -27,4 +22,7 @@ public class CarsStorage {
         carsList.clear();
     }
 
+    public Optional<Car> findCarByVin(String vin) {
+        return carsList.stream().filter(car -> car.getVin().equals(vin)).findFirst();
+    }
 }
