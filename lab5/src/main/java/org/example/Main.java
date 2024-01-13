@@ -18,7 +18,7 @@ public class Main {
         this.carsStorage = carsStorage;
         this.rentalService = rentalService;
 
-        execProcess();
+//        execProcess();
     }
 
     public static void main(String[] args) {

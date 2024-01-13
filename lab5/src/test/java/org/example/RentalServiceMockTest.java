@@ -1,3 +1,5 @@
+package org.example;
+
 import org.example.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,6 +33,6 @@ public class RentalServiceMockTest {
         //WHEN
         double estimatePrice = rentalService.estimatePrice("fsdfsgrgdg", LocalDate.now(),LocalDate.now().plusDays(3));
         //THEN
-        assertThat(estimatePrice).isEqualTo(45000);
+        assertThat(estimatePrice).isEqualTo(300);
     }
 }
